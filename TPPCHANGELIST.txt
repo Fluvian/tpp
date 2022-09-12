@@ -1,0 +1,40 @@
+TPP CHANGES LIST:
+
+- Mario's movement speed is directly based on movement speed (code by Guestpiki).
+- Piranha Plants don't wake up with jumping and have a smaller hitbox.
+- When Mario is far away from a Piranha Plant it's animation will reset and it turns silent. 
+- Mario's cannon behaviour has been reworked, while not an exact match with footage, it's closer than what TPP currently has.
+- The Bullet-Bill sound plays when shooting out of a cannon.
+- I-frames have been removed.
+- In Snow Slider the warp object that leads to the slide has been lowered.
+- Every floor (except for WF dirt and SS snow) plays the default stepping sound (which has been made a bit louder). (code by Crustian).
+- Mountain painting now features a small hill in the bottom-right corner, which can be seen in footage.
+- Trees only make leaf particles appear when mario climbs down them.
+- Trees have a better import which makes them darker, now matching footage.
+- Entering the Bowser trapdoor fades into a circle and there's no warping sound when doing so.
+- The warp object below that trapdoor has been lowered, now matching footage closely.
+- When Mario exits a painting after dying, he immediately says "Haugh!" instead of saying it when hitting the floor.
+- Mario now goes into idle immediately when stopping while holding an object.
+- Mario's running animation plays earlier.
+- Mario's pre tip-toe animation has higher priority than the regular tip-toe animation.
+- Both the tip-toe and pre tip-toe animations' playing speeds are more dependent on mario's current movement speed.
+- If Mario gets up from stomach sliding while the stick is held, he goes into running immediately.
+- Now there's 2 dive getup animations, one if mario gets up from a dive activated by pressing b, and another if he slides automatically from a slope.
+- When Mario sidesteps at low speeds dust appears.
+- Now Mario can jump from a crouch.
+- Dive rolling has been fixed, now Mario only does a short hop if the stick is not being held.
+- When bonking at a wall, Mario says "No!" when hitting the floor instead of "Haugh!".
+- When Mario is in C-Up mode, he won't take damage from Bowser's landing attack.
+- Bowser's shrinking speed has been tweaked to match footage more closely.
+- Smoke from Bowser's bomb has been made opaque and stays a little longer before dissapearing.
+- Skidding has been made less slippery.
+- Analog Swimming has recieved a slight speed increase, and now there's particles when mario does it.
+- Input window for jumping out of water is smaller.
+- Swimstop doesn't play when entering water.
+- Mario doesn't bob when swimming at the surface of water.
+- Mario's height when at the surface of water has been lowered, now matching footage.
+- Mario doesn't move after being hit underwater.
+- Hoot now stops completely when touching a wall.
+- Mario gets top speed immediately when exiting sidestep (code by Guestpiki).
+- Vertical flamethrower object in Fire Bubble has been removed, as it's not seen at all in any footage of it's area.
+- Bullies act like if they were punched when bumping into Mario. 

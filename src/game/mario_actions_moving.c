@@ -416,7 +416,7 @@ s32 apply_slope_decel(struct MarioState *m, f32 decelCoef) {
             decel = decelCoef * 0.7f;
             break;
         default:
-            decel = decelCoef * 2.0f;
+            decel = decelCoef * 2.5f;
             break;
         case SURFACE_CLASS_NOT_SLIPPERY:
             decel = decelCoef * 3.0f;
@@ -438,7 +438,7 @@ s32 update_decelerating_speed(struct MarioState *m) {
         stopped = TRUE;
     }
 
-    mario_set_forward_vel(m, m->forwardVel);
+    mario_set_forward_vel(m, 0.0f);
     mario_update_moving_sand(m);
     mario_update_windy_ground(m);
 
@@ -473,6 +473,10 @@ void update_walking_speed(struct MarioState *m) {
         m->forwardVel = 48.0f;
     }
 
+    if (m->forwardVel >= targetSpeed) { //code by Guestpiki 
+		m->forwardVel = m->intendedMag;
+	}
+ 
     m->faceAngle[1] =
         m->intendedYaw - approach_s32((s16)(m->intendedYaw - m->faceAngle[1]), 0, 0x800, 0x800);
     apply_slope_accel(m);
@@ -536,10 +540,6 @@ void anim_and_audio_for_walk(struct MarioState *m) {
 
     val04 = m->intendedMag > m->forwardVel ? m->intendedMag : m->forwardVel;
 
-    if (val04 < 4.0f) {
-        val04 = 4.0f;
-    }
-
     if (m->quicksandDepth > 50.0f) {
         val14 = (s32)(val04 / 4.0f * 0x10000);
         set_mario_anim_with_accel(m, MARIO_ANIM_MOVE_IN_QUICKSAND, val14);
@@ -549,14 +549,19 @@ void anim_and_audio_for_walk(struct MarioState *m) {
         while (val0C) {
             switch (m->actionTimer) {
                 case 0:
-                    if (val04 > 8.0f) {
+                    if (val04 > 6.0f) {
                         m->actionTimer = 2;
+                        m->pretiptimer = 0;
                     } else {
-                        val14 = (s32)(val04 * 0.75f * 0x10000);
+                        val14 = (m->intendedMag * 10000.0f) * 2.5f;
                         set_mario_anim_with_accel(m, MARIO_ANIM_START_TIPTOE, val14);
                         play_step_sound(m, 7, 22);
                         if (is_anim_past_frame(m, 23)) {
-                            m->actionTimer = 2;
+                            m->pretiptimer++;
+                        }
+                        if (m->pretiptimer > 1) {
+                            m->actionTimer = 1; 
+                            m->pretiptimer = 0;
                         }
 
                         val0C = FALSE;
@@ -564,11 +569,10 @@ void anim_and_audio_for_walk(struct MarioState *m) {
                     break;
 
                 case 1:
-                    if (val04 > 8.0f) {
+                    if (val04 > 6.0f) {
                         m->actionTimer = 2;
                     } else {
-                        //! (Speed Crash) If Mario's speed is more than 2^17.
-                        val14 = (s32)(val04 * 0x10000);
+                        val14 = (m->intendedMag * 10000.0f) * 8.0f;
                         set_mario_anim_with_accel(m, MARIO_ANIM_TIPTOE, val14);
                         play_step_sound(m, 14, 72);
 
@@ -578,8 +582,8 @@ void anim_and_audio_for_walk(struct MarioState *m) {
 
                 case 2:
                     if (val04 < 5.0f) {
-                        m->actionTimer = 1;
-                    } else if (val04 > 18.0f) {
+                        m->actionTimer = 0;
+                    } else if (val04 > 10.0f) {
                         m->actionTimer = 3;
                     } else {
                         //! (Speed Crash) If Mario's speed is more than 2^17.
@@ -592,7 +596,7 @@ void anim_and_audio_for_walk(struct MarioState *m) {
                     break;
 
                 case 3:
-                    if (val04 < 14.0f) {
+                    if (val04 < 9.0f) {
                         m->actionTimer = 2;
                     } else {
                         //! (Speed Crash) If Mario's speed is more than 2^17.
@@ -703,6 +707,10 @@ void push_or_sidle_wall(struct MarioState *m, Vec3f startPos) {
             set_mario_anim_with_accel(m, MARIO_ANIM_SIDESTEP_RIGHT, val04);
         } else {
             set_mario_anim_with_accel(m, MARIO_ANIM_SIDESTEP_LEFT, val04);
+        }
+        
+        if (m->forwardVel < 4.0f) {
+            m->particleFlags |= PARTICLE_DUST;
         }
 
         m->actionState = 1;
@@ -816,6 +824,9 @@ s32 act_walking(struct MarioState *m) {
     }
 
     m->actionState = 0;
+
+if ((m->wall != NULL) && (m->action == ACT_WALKING) && (m->actionTimer == 3)) { m->forwardVel = 32; } //code by Guestpiki
+if ((m->action == ACT_WALKING) && (m->actionTimer != 3) && (m->actionState != 1) || (m->action != ACT_WALKING)) { m->wall = NULL;}
 
     vec3f_copy(startPos, m->pos);
     update_walking_speed(m);
@@ -1509,7 +1520,7 @@ s32 stomach_slide_action(struct MarioState *m, u32 stopAction, u32 airAction, s3
 }
 
 s32 act_stomach_slide(struct MarioState *m) {
-    s32 cancel = stomach_slide_action(m, ACT_STOMACH_SLIDE_STOP, ACT_FREEFALL, MARIO_ANIM_SLIDE_DIVE);
+    s32 cancel = stomach_slide_action(m, ACT_BUTT_SLIDE_STOP, ACT_FREEFALL, MARIO_ANIM_SLIDE_DIVE);
     return cancel;
 }
 
@@ -1566,7 +1577,7 @@ s32 common_ground_knockback_action(struct MarioState *m, s32 animation, s32 arg2
         play_sound_if_no_flag(m, SOUND_MARIO_ATTACKED, MARIO_MARIO_SOUND_PLAYED);
     } else {
 #ifdef VERSION_JP
-        play_sound_if_no_flag(m, SOUND_MARIO_HOOHOO, MARIO_MARIO_SOUND_PLAYED);
+        play_sound_if_no_flag(m, SOUND_MARIO_ATTACKED, MARIO_MARIO_SOUND_PLAYED);
 #else
         play_sound_if_no_flag(m, SOUND_MARIO_OOOF2, MARIO_MARIO_SOUND_PLAYED);
 #endif
@@ -1583,9 +1594,9 @@ s32 common_ground_knockback_action(struct MarioState *m, s32 animation, s32 arg2
     if (val04 < arg2) {
         apply_landing_accel(m, 0.9f);
     } else if (m->forwardVel >= 0.0f) {
-        mario_set_forward_vel(m, 0.1f);
+        //mario_set_forward_vel(m, 0.1f);
     } else {
-        mario_set_forward_vel(m, -0.1f);
+        //mario_set_forward_vel(m, -0.1f);
     }
 
     if (perform_ground_step(m) == GROUND_STEP_LEFT_GROUND) {
@@ -1599,7 +1610,7 @@ s32 common_ground_knockback_action(struct MarioState *m, s32 animation, s32 arg2
             set_mario_action(m, ACT_STANDING_DEATH, 0);
         } else {
             if (arg4 > 0) {
-                m->invincTimer = 30;
+                //m->invincTimer = 30;
             }
             set_mario_action(m, ACT_IDLE, 0);
         }

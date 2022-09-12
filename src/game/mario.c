@@ -32,6 +32,8 @@
 #include "level_table.h"
 #include "thread6.h"
 
+#define QUIT_LEVEL_SELECT_COMBO (Z_TRIG | START_BUTTON | L_CBUTTONS | R_CBUTTONS)
+
 u32 unused80339F10;
 s8 filler80339F1C[20];
 
@@ -432,23 +434,23 @@ s32 mario_get_floor_class(struct MarioState *m) {
 }
 
 // clang-format off
-s8 sTerrainSounds[7][6] = {
+s8 sTerrainSounds[7][6] = { //code by Crustian
     // default,              hard,                 slippery,
     // very slippery,        noisy default,        noisy slippery
-    { SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_STONE,  SOUND_TERRAIN_GRASS,
-      SOUND_TERRAIN_GRASS,   SOUND_TERRAIN_GRASS,  SOUND_TERRAIN_DEFAULT }, // TERRAIN_GRASS
-    { SOUND_TERRAIN_STONE,   SOUND_TERRAIN_STONE,  SOUND_TERRAIN_STONE,
-      SOUND_TERRAIN_STONE,   SOUND_TERRAIN_GRASS,  SOUND_TERRAIN_GRASS }, // TERRAIN_STONE
+    { SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_STONE,  SOUND_TERRAIN_DEFAULT,
+      SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_DEFAULT }, // TERRAIN_GRASS
+    { SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_STONE,  SOUND_TERRAIN_DEFAULT,
+      SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_DEFAULT }, // TERRAIN_STONE
     { SOUND_TERRAIN_SNOW,    SOUND_TERRAIN_ICE,    SOUND_TERRAIN_SNOW,
-      SOUND_TERRAIN_ICE,     SOUND_TERRAIN_STONE,  SOUND_TERRAIN_STONE }, // TERRAIN_SNOW
+      SOUND_TERRAIN_ICE,     SOUND_TERRAIN_DEFAULT,  SOUND_TERRAIN_STONE }, // TERRAIN_SNOW
     { SOUND_TERRAIN_SAND,    SOUND_TERRAIN_STONE,  SOUND_TERRAIN_SAND,
       SOUND_TERRAIN_SAND,    SOUND_TERRAIN_STONE,  SOUND_TERRAIN_STONE }, // TERRAIN_SAND
     { SOUND_TERRAIN_SPOOKY,  SOUND_TERRAIN_SPOOKY, SOUND_TERRAIN_SPOOKY,
       SOUND_TERRAIN_SPOOKY,  SOUND_TERRAIN_STONE,  SOUND_TERRAIN_STONE }, // TERRAIN_SPOOKY
     { SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_STONE,  SOUND_TERRAIN_GRASS,
       SOUND_TERRAIN_ICE,     SOUND_TERRAIN_STONE,  SOUND_TERRAIN_ICE }, // TERRAIN_WATER
-    { SOUND_TERRAIN_STONE,   SOUND_TERRAIN_STONE,  SOUND_TERRAIN_STONE,
-      SOUND_TERRAIN_STONE,   SOUND_TERRAIN_ICE,    SOUND_TERRAIN_ICE }, // TERRAIN_SLIDE
+    { SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_DEFAULT,
+      SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_DEFAULT }, // TERRAIN_SLIDE
 };
 // clang-format on
 
@@ -1237,18 +1239,18 @@ void debug_print_speed_action_normal(struct MarioState *m) {
     f32 steepness;
     f32 floor_nY;
 
-#ifdef TPP_DEBUG
-    print_text_fmt_int(16, 48, "X %d", m->pos[0]);
-    print_text_fmt_int(16, 32, "Y %d", m->pos[1]);
-    print_text_fmt_int(16, 16, "Z %d", m->pos[2]);
-#endif
-
     if (gShowDebugText) {
         steepness = sqrtf(
             ((m->floor->normal.x * m->floor->normal.x) + (m->floor->normal.z * m->floor->normal.z)));
         floor_nY = m->floor->normal.y;
+        
+        print_text_fmt_int(16, 48, "X %d", m->pos[0]);
+        print_text_fmt_int(16, 32, "Y %d", m->pos[1]);
+        print_text_fmt_int(16, 16, "Z %d", m->pos[2]);
 
-        print_text_fmt_int(210, 88, "ANG %d", (atan2s(floor_nY, steepness) * 180.0f) / 32768.0f);
+        print_text_fmt_int(210, 120, "ACT %d", m->actionTimer);
+        print_text_fmt_int(210, 104, "PRE %d", m->pretiptimer);
+        print_text_fmt_int(210, 88, "MAG %d", m->intendedMag);
         print_text_fmt_int(210, 72, "SPD %d", m->forwardVel);
 
         // STA short for "status," the official action name via SMS map.
@@ -1260,6 +1262,18 @@ void debug_print_speed_action_normal(struct MarioState *m) {
  * Update the button inputs for Mario.
  */
 void update_mario_button_inputs(struct MarioState *m) {
+    if (m->controller->buttonDown & R_JPAD) {
+        gShowDebugText = TRUE;
+    }
+
+    if (m->controller->buttonDown & L_JPAD) {
+        gShowDebugText = FALSE;
+    }
+
+    if (m->action != ACT_DEBUG_FREE_MOVE && m->controller->buttonPressed & D_JPAD) {
+        set_mario_action(m, ACT_DEBUG_FREE_MOVE, 0);
+    }
+
     if (m->controller->buttonPressed & A_BUTTON) {
         m->input |= INPUT_A_PRESSED;
     }
@@ -1419,6 +1433,12 @@ void update_mario_inputs(struct MarioState *m) {
     if (m->doubleJumpTimer > 0) {
         m->doubleJumpTimer--;
     }
+
+    if (gPlayer1Controller->buttonDown == QUIT_LEVEL_SELECT_COMBO) { 
+	    gDebugLevelSelect = TRUE;
+        fade_into_special_warp(-9, 1);
+    }
+
 }
 
 /**
