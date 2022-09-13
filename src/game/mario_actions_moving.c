@@ -528,7 +528,7 @@ s32 begin_braking_action(struct MarioState *m) {
         return set_mario_action(m, ACT_BRAKING, 0);
     }
 
-    return set_mario_action(m, ACT_IDLE, 0);
+    return set_mario_action(m, ACT_DECELERATING, 0);
 }
 
 void anim_and_audio_for_walk(struct MarioState *m) {
@@ -859,6 +859,10 @@ s32 act_move_punching(struct MarioState *m) {
         return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
     }
 
+    if (m->input & INPUT_A_PRESSED) {
+        return set_mario_action(m, ACT_JUMP, 0);
+    }
+
     m->actionState = 1;
 
     mario_update_punch_sequence(m);
@@ -1078,65 +1082,45 @@ s32 act_braking(struct MarioState *m) {
 }
 
 s32 act_decelerating(struct MarioState *m) {
-    s32 val0C;
-    s16 slopeClass = mario_get_floor_class(m);
+    m->actionTimer++;
 
-    if (!(m->input & INPUT_FIRST_PERSON)) {
-        if (should_begin_sliding(m)) {
-            return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
-        }
+    set_mario_animation(m, MARIO_ANIM_IDLE_HEAD_LEFT);
 
-        if (m->input & INPUT_A_PRESSED) {
-            return set_jump_from_landing(m);
-        }
-
-        if (check_ground_dive_or_punch(m)) {
-            return TRUE;
-        }
-
-        if (m->input & INPUT_NONZERO_ANALOG) {
-            return set_mario_action(m, ACT_WALKING, 0);
-        }
-
-        if (m->input & INPUT_Z_PRESSED) {
-            return set_mario_action(m, ACT_CROUCH_SLIDE, 0);
-        }
+    if (m->input & INPUT_A_PRESSED) {
+        return set_jumping_action(m, ACT_JUMP, 0);
     }
 
-    if (update_decelerating_speed(m)) {
-        return set_mario_action(m, ACT_IDLE, 0);
+    if (m->input & INPUT_OFF_FLOOR) {
+        return set_mario_action(m, ACT_FREEFALL, 0);
     }
 
-    switch (perform_ground_step(m)) {
-        case GROUND_STEP_LEFT_GROUND:
-            set_mario_action(m, ACT_FREEFALL, 0);
-            break;
-
-        case GROUND_STEP_HIT_WALL:
-            if (slopeClass == SURFACE_CLASS_VERY_SLIPPERY) {
-                mario_bonk_reflection(m, TRUE);
-            } else {
-                mario_set_forward_vel(m, 0.0f);
-            }
-            break;
+    if (m->input & INPUT_ABOVE_SLIDE) {
+        return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
     }
 
-    if (slopeClass == SURFACE_CLASS_VERY_SLIPPERY) {
-        set_mario_animation(m, MARIO_ANIM_IDLE_HEAD_LEFT);
-        play_sound(SOUND_MOVING_TERRAIN_SLIDE + m->terrainSoundAddend,
-                   m->marioObj->header.gfx.cameraToObject);
-        m->particleFlags |= PARTICLE_DUST;
-    } else {
-        // (Speed Crash) Crashes if speed exceeds 2^17.
-        if ((val0C = (s32)(m->forwardVel / 4.0f * 0x10000)) < 0x1000) {
-            val0C = 0x1000;
-        }
-
-        set_mario_anim_with_accel(m, MARIO_ANIM_WALKING, val0C);
-        play_step_sound(m, 10, 49);
+    if (m->input & INPUT_FIRST_PERSON) {
+        return set_mario_action(m, ACT_FIRST_PERSON, 0);
     }
 
-    return FALSE;
+    if (m->input & INPUT_NONZERO_ANALOG) {
+        return set_mario_action(m, ACT_WALKING, 0);
+    }
+
+    if (m->input & INPUT_B_PRESSED) {
+        return set_mario_action(m, ACT_MOVE_PUNCHING, 5);
+    }
+
+    if (m->input & INPUT_Z_DOWN) {
+        return set_mario_action(m, ACT_START_CROUCHING, 0);
+    }
+
+    if (m->actionTimer > 4){
+        set_mario_action(m, ACT_IDLE, 0);
+    }
+
+    stationary_ground_step(m);
+
+    return 0;
 }
 
 s32 act_hold_decelerating(struct MarioState *m) {

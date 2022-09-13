@@ -18,6 +18,7 @@ TPP CHANGES LIST:
 - Mario's running animation plays earlier.
 - Mario's pre tip-toe animation has higher priority than the regular tip-toe animation.
 - Both the tip-toe and pre tip-toe animations' playing speeds are more dependent on mario's current movement speed.
+- Pre tip-toe plays longer than a frame.
 - If Mario gets up from stomach sliding while the stick is held, he goes into running immediately.
 - Now there's 2 dive getup animations, one if mario gets up from a dive activated by pressing b, and another if he slides automatically from a slope.
 - When Mario sidesteps at low speeds dust appears.
@@ -38,3 +39,5 @@ TPP CHANGES LIST:
 - Mario gets top speed immediately when exiting sidestep (code by Guestpiki).
 - Vertical flamethrower object in Fire Bubble has been removed, as it's not seen at all in any footage of it's area.
 - Bullies act like if they were punched when bumping into Mario. 
+- Mr. I uses the MIPS hopping sound effect when shooting a tear, which isn't the exact sound used in sw95 but it's closer than the one used in the final game.
+- Punch glitch has been added. (to activate it, stop at a low speed and punch in a 5 frame window, if you do, Mario gets stuck in the punching pose)

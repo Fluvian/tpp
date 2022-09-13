@@ -1198,7 +1198,7 @@ u32 interact_bully(struct MarioState *m, UNUSED u32 interactType, struct Object 
         } else {
         o->oMoveAngleYaw = m->faceAngle[1] - (m->faceAngle[1] * 2);    
         }
-        o->oForwardVel = (3392.0f / o->hitboxRadius) / 2.0f;
+        o->oForwardVel = (3392.0f / o->hitboxRadius) / 2.5f;
 
         attack_object(o, interaction);
         bounce_back_from_attack(m, interaction);
