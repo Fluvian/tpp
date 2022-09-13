@@ -572,7 +572,7 @@ void anim_and_audio_for_walk(struct MarioState *m) {
                     if (val04 > 6.0f) {
                         m->actionTimer = 2;
                     } else {
-                        val14 = (m->intendedMag * 10000.0f) * 8.0f;
+                        val14 = (m->intendedMag * 10000.0f) * 7.5f;
                         set_mario_anim_with_accel(m, MARIO_ANIM_TIPTOE, val14);
                         play_step_sound(m, 14, 72);
 
