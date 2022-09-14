@@ -758,7 +758,7 @@ void bowser_act_dance(void) {
 
 void bowser_spawn_grand_star_key(void) {
     spawn_object_relative(0, 0, 200.0f, 200.0f, o, MODEL_STAR, bhvStar);
-    obj_spawn_loot_yellow_coins(o, 20, 5.0f);
+    obj_spawn_loot_yellow_coins(o, 20, 4.0f);
 }
 
 void bowser_fly_back_dead(void) {
@@ -797,9 +797,9 @@ s8 timer;
 s32 bowser_dead_twirl_into_trophy(void) {
     s32 ret = 0;
     if (o->header.gfx.scale[0] > 0.0) {
-        o->header.gfx.scale[0] = o->header.gfx.scale[0] - 0.042f;
-        o->header.gfx.scale[1] = o->header.gfx.scale[1] - 0.042f;
-        o->header.gfx.scale[2] = o->header.gfx.scale[2] - 0.042f;
+        o->header.gfx.scale[0] = o->header.gfx.scale[0] - 0.03f;
+        o->header.gfx.scale[1] = o->header.gfx.scale[1] - 0.03f;
+        o->header.gfx.scale[2] = o->header.gfx.scale[2] - 0.03f;
     }
     if (o->header.gfx.scale[1] <= 0.0 && timer == 2)
         cur_obj_spawn_particles(&sBowserExplodeParticles);
