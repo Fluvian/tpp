@@ -1,6 +1,6 @@
 TPP CHANGES LIST:
 
-- Mario's movement speed is directly based on movement speed (code by Guestpiki).
+- Mario's movement speed is directly based on how far the stick is held (code by Guestpiki).
 - Piranha Plants don't wake up with jumping and have a smaller hitbox.
 - When Mario is far away from a Piranha Plant it's animation will reset and it turns silent. 
 - Thowmp's slam sound has been made louder and edited a bit to match footage more closely.
@@ -13,7 +13,6 @@ TPP CHANGES LIST:
 - Every floor (except for WF dirt and SS snow) plays the default stepping sound (which has been made a bit louder). (code by Crustian).
 - Mountain painting now features a small hill in the bottom-right corner, which can be seen in footage.
 - Trees only make leaf particles appear when mario climbs down them.
-- Trees have a better import which makes them darker, now matching footage.
 - Entering the Bowser trapdoor fades into a circle and there's no warping sound when doing so.
 - The warp object below that trapdoor has been lowered, now matching footage closely.
 - When Mario exits a painting after dying, he immediately says "Haugh!" instead of saying it when hitting the floor.
