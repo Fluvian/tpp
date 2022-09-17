@@ -1320,14 +1320,14 @@ s32 act_air_hit_wall(struct MarioState *m) {
 
 s32 act_forward_rollout(struct MarioState *m) {
     if (m->actionState == 0) {
-	    if (m->intendedMag > 0) {
-		    m->vel[1] = 30.0f;
+        if (m->intendedMag > 0) {
+            m->vel[1] = 30.0f;
             m->actionState = 1;
-	    } else {
-	        m->vel[1] = 15.0f;
+        } else {
+            m->vel[1] = 15.0f;
             m->actionState = 1;
         }
-	}
+    }
 
     play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, 0);
 
@@ -1366,14 +1366,14 @@ s32 act_forward_rollout(struct MarioState *m) {
 
 s32 act_backward_rollout(struct MarioState *m) {
     if (m->actionState == 0) {
-	    if (m->intendedMag > 0) {
-		    m->vel[1] = 30.0f;
+        if (m->intendedMag > 0) {
+            m->vel[1] = 30.0f;
             m->actionState = 1;
-	    } else {
-	        m->vel[1] = 15.0f;
+        } else {
+            m->vel[1] = 15.0f;
             m->actionState = 1;
         }
-	}
+    }
 
     play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, 0);
 

@@ -473,9 +473,9 @@ void update_walking_speed(struct MarioState *m) {
         m->forwardVel = 48.0f;
     }
 
-    if (m->forwardVel >= targetSpeed) { //code by Guestpiki 
-		m->forwardVel = m->intendedMag;
-	}
+    if (m->forwardVel >= targetSpeed) {  
+        m->forwardVel = m->intendedMag;
+    }
  
     m->faceAngle[1] =
         m->intendedYaw - approach_s32((s16)(m->intendedYaw - m->faceAngle[1]), 0, 0x800, 0x800);
@@ -551,15 +551,15 @@ void anim_and_audio_for_walk(struct MarioState *m) {
                 case 0:
                     if (val04 > 6.0f) {
                         m->actionTimer = 2;
-                        m->pretiptimer = 0;
+                        m->pretipTimer = 0;
                     } else {
                         val14 = (m->intendedMag * 10000.0f) * 2.5f;
                         set_mario_anim_with_accel(m, MARIO_ANIM_START_TIPTOE, val14);
                         play_step_sound(m, 7, 22);
-                        m->pretiptimer++;
-                        if (m->pretiptimer > 34) {
+                        m->pretipTimer++;
+                        if (m->pretipTimer > 34) {
                             m->actionTimer = 1; 
-                            m->pretiptimer = 0;
+                            m->pretipTimer = 0;
                         }
 
                         val0C = FALSE;
@@ -823,7 +823,7 @@ s32 act_walking(struct MarioState *m) {
 
     m->actionState = 0;
 
-if ((m->wall != NULL) && (m->action == ACT_WALKING) && (m->actionTimer == 3)) { m->forwardVel = 32; } //code by Guestpiki
+if ((m->wall != NULL) && (m->action == ACT_WALKING) && (m->actionTimer == 3)) { m->forwardVel = 32; } 
 if ((m->action == ACT_WALKING) && (m->actionTimer != 3) && (m->actionState != 1) || (m->action != ACT_WALKING)) { m->wall = NULL;}
 
     vec3f_copy(startPos, m->pos);

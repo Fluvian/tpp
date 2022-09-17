@@ -432,7 +432,7 @@ s32 mario_get_floor_class(struct MarioState *m) {
 }
 
 // clang-format off
-s8 sTerrainSounds[7][6] = { //code by Crustian
+s8 sTerrainSounds[7][6] = { 
     // default,              hard,                 slippery,
     // very slippery,        noisy default,        noisy slippery
     { SOUND_TERRAIN_DEFAULT, SOUND_TERRAIN_STONE,  SOUND_TERRAIN_DEFAULT,

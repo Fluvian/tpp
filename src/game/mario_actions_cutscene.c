@@ -1051,7 +1051,7 @@ s32 act_exit_land_save_dialog(struct MarioState *m) {
 
 s32 act_death_exit(struct MarioState *m) {
     if (m->actionTimer == 15) {
-    play_sound(SOUND_MARIO_HOOHOO, m->marioObj->header.gfx.cameraToObject);
+        play_sound(SOUND_MARIO_HOOHOO, m->marioObj->header.gfx.cameraToObject);
     }
     if (15 < m->actionTimer++
         && launch_mario_until_land(m, ACT_DEATH_EXIT_LAND, MARIO_ANIM_BACKWARD_AIR_KB, -32.0f)) {
