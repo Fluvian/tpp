@@ -482,11 +482,6 @@ u32 bully_knock_back_mario(struct MarioState *mario) {
     mario->pos[0] = marioData.posX;
     mario->pos[2] = marioData.posZ;
 
-    /*bully->oMoveAngleYaw = newBullyYaw;
-    bully->oForwardVel = sqrtf(bullyData.velX * bullyData.velX + bullyData.velZ * bullyData.velZ);
-    bully->oPosX = bullyData.posX;
-    bully->oPosZ = bullyData.posZ;*/
-
     if (marioDYaw < -0x4000 || marioDYaw > 0x4000) {
         mario->faceAngle[1] += 0x8000;
         mario->forwardVel *= -1.0f;
@@ -861,12 +856,12 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
                 queue_rumble_data(12, 80);
             }
 #else
-        if (gCurrLevelNum != LEVEL_CASTLE) {    
-            play_sound(o->collisionData == segmented_to_virtual(warp_pipe_seg3_collision_03009AC8)
-                           ? SOUND_MENU_ENTER_PIPE
-                           : SOUND_MENU_ENTER_HOLE,
-                       m->marioObj->header.gfx.cameraToObject);
-        }
+            if (gCurrLevelNum != LEVEL_CASTLE) {    
+                play_sound(o->collisionData == segmented_to_virtual(warp_pipe_seg3_collision_03009AC8)
+                               ? SOUND_MENU_ENTER_PIPE
+                               : SOUND_MENU_ENTER_HOLE,
+                           m->marioObj->header.gfx.cameraToObject);
+            }
 #endif
 
             mario_stop_riding_object(m);
@@ -1194,11 +1189,11 @@ u32 interact_bully(struct MarioState *m, UNUSED u32 interactType, struct Object 
 
         drop_and_set_mario_action(m, bully_knock_back_mario(m), 0);
         if (m->forwardVel < 0.0f) {
-        o->oMoveAngleYaw = m->faceAngle[1];
+            o->oMoveAngleYaw = m->faceAngle[1];
         } else {
-        o->oMoveAngleYaw = m->faceAngle[1] - (m->faceAngle[1] * 2);    
+            o->oMoveAngleYaw = m->faceAngle[1] - (m->faceAngle[1] * 2);    
         }
-        o->oForwardVel = (3392.0f / o->hitboxRadius) / 2.5f;
+            o->oForwardVel = (3392.0f / o->hitboxRadius) / 2.5f;
 
         attack_object(o, interaction);
         bounce_back_from_attack(m, interaction);
