@@ -384,9 +384,6 @@ u32 common_air_action_step(struct MarioState *m, u32 landAction, s32 animation, 
             set_mario_animation(m, animation);
 
             if (m->forwardVel > 16.0f) {
-#if ENABLE_RUMBLE
-                queue_rumble_data(5, 40);
-#endif
                 mario_bonk_reflection(m, FALSE);
                 m->faceAngle[1] += 0x8000;
 
