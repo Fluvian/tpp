@@ -29,6 +29,5 @@
 
 // Border Height Define
 #define BORDER_HEIGHT 0
-//#define TPP_DEBUG
 
 #endif
