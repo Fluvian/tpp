@@ -489,6 +489,10 @@ s32 act_triple_jump(struct MarioState *m) {
             mario_bonk_reflection(m, FALSE);
             break;
 
+        case AIR_STEP_LANDED:
+            set_mario_action(m, DOUBLE_JUMP_LAND, 0);
+            break;
+
         case AIR_STEP_HIT_LAVA_WALL:
             lava_boost_on_wall(m);
             break;
