@@ -6,7 +6,7 @@ Hello! we've been working real hard bringing this project to all of you! Were ju
 # Frequently Asked Questions (FAQ)
 People that have been requesting questions about this project.
 
-![annoying](https://cdn.discordapp.com/attachments/1225936758873522216/1253217587979091999/float.png?ex=66750d54&is=6673bbd4&hm=9ef274002c14fd9feac0eeaec2bcb6314b448d1fc410fb545e0b0524b021f6a4&)
+![annoying](https://cdn.discordapp.com/attachments/1225936758873522216/1253217587979091999/float.png?ex=66765ed4&is=66750d54&hm=2452a4b6c959cb62cb82d98311759a3d3c5a76244a07ec56624444caf66938ea&)
 
 # Wheres the old TPP?
 **We bought it for free lolololol noobs**
