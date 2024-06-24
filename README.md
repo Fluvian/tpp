@@ -15,7 +15,7 @@ People that have been requesting questions about this project.
 **It became better.**
 
 # Hey! Stop impersonating Fluvian!
-**I'm not. nobody owns the name Fluvian*
+**I'm not. nobody owns the name Fluvian**
 
 # Make a Discord Server!
 **I already have one you can join here https://discord.gg/QXVCbdbyGy**
