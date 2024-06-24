@@ -11,13 +11,16 @@ There's so many differences from the final game compared to the beta, with even 
 People that have been requesting questions about this project.
 ![annoying](https://cdn.discordapp.com/attachments/1225936758873522216/1254661810494378075/float.png?ex=667a4e5e&is=6678fcde&hm=68e7c319452fccc1a5d53ba2871c15b81c55e17ba042249badd04558e3de27ba&)
 
-# Wheres the old TPP?
+# Wheres the old TPP? (FAQ)
 **It became better.**
 
-# Hey! Stop impersonating Fluvian!
+# Hey! Stop impersonating Fluvian! (FAQ)
 **I'm not. nobody owns the name Fluvian**
 
-# Make a Discord Server!
+# Is this gonna be a decomp hack? (FAQ)
+**No. but a sm64ex-coop mod!**
+
+# Make a Discord Server! (FAQ)
 **I already have one you can join here https://discord.gg/QXVCbdbyGy**
 
 # In Construction!
